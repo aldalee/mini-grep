@@ -1,7 +1,6 @@
 package grep
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"strings"
@@ -29,26 +28,25 @@ func Run(config *Config) error {
 }
 
 // search performs a case-sensitive search
-func search(query, contents string) (results []string) {
-	scanner := bufio.NewScanner(strings.NewReader(contents))
-	for scanner.Scan() {
-		line := scanner.Text()
+func search(query, contents string) (result []string) {
+	var lines = strings.Split(contents, "\n")
+	for _, line := range lines {
 		if strings.Contains(line, query) {
-			results = append(results, line)
+			result = append(result, line)
 		}
 	}
-	return results
+
+	return
 }
 
 // searchCaseInsensitive performs a case-insensitive search
-func searchCaseInsensitive(query, contents string) (results []string) {
-	lowerQuery := strings.ToLower(query)
-	scanner := bufio.NewScanner(strings.NewReader(contents))
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.Contains(strings.ToLower(line), lowerQuery) {
-			results = append(results, line)
+func searchCaseInsensitive(query, contents string) (result []string) {
+	var lines = strings.Split(strings.ToLower(contents), "\n")
+	for _, line := range lines {
+		if strings.Contains(line, strings.ToLower(query)) {
+			result = append(result, line)
 		}
 	}
-	return results
+
+	return
 }
